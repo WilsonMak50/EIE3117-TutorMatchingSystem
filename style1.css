@@ -1,0 +1,177 @@
+
+h1,h2,h3{
+    font-family: 'Sofia Sans Extra Condensed';
+}
+p,a,input,label,textarea,span,ul,li{
+    font-family: 'Sofia Sans Extra Condensed', sans-serif;
+    font-size:35px;
+}
+#main .jumbotron{
+    height:160vh;
+}
+
+h1{
+ 
+    font-size: 50;
+    font-weight: 600;
+}
+h2{
+    color:#708d8d;
+    font-size: 35;
+    font-weight: 200;
+}
+
+h3{
+    font-family: 'Sofia Sans Extra Condensed', sans-serif;
+    /* color:rgb(63, 63, 63); */
+    /* font-size: 30;
+    font-weight: 200; */
+}
+
+
+p{
+    font-size: 37;
+    color:rgb(63, 63, 63);
+    font-weight: 500;
+}
+
+.container{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000;
+} 
+
+#main{
+    background: linear-gradient(to right, #708d8d, #93edc7);
+}
+
+#nav .nav-link{
+  color:gray;
+  font-size: 40px;
+  margin: 0px;
+  font-weight: 400;
+ 
+}
+
+#nav li{
+    margin:0 20px;
+}
+#nav .dropdown-item{
+    color:gray;
+    font-size: 40px; 
+}
+
+
+body{
+    padding:0;
+    margin:0;
+    background: linear-gradient(45deg,#131086,#b621f3);
+}
+
+#profile .container{
+    min-height: calc(100vh- 40px * 2); 
+    display:grid;
+    /* grid-template-columns: 50% 50%;  */
+    border-radius: 10px;
+    overflow:hidden; 
+     height: 1100px; 
+}
+
+
+
+#profile .login-left{
+    display:flex;
+    flex-direction: column; 
+    justify-content: flex-start;
+    padding-left:150px;
+    background-color:white;
+}
+
+
+ img{
+    width: 80%;
+} 
+
+
+
+#profile .form-item:not(.checkbox){
+    display:inline-black;
+    background-color:white;
+}
+
+#profile .buttons{
+    text-align: right;  
+    width: 300px;  
+    padding-top: 30px;  
+} 
+
+input[type='text'],input[type='password'],input[type='email'],input[type='date']{
+    border:1px solid black;
+    height:45px;
+    padding: 0 2 rem;
+    width:50%;
+    font-size: 18px;
+    border-radius:100px;
+}
+
+
+
+.checkbox{
+    display:flex;
+    gap:7 px;
+    width: 6em;
+    margin-right: 20em;
+} 
+
+input[type='checkbox']{
+    float: left;
+    width:30px;
+    height:48px;
+    accent-color: #131086;
+}
+
+button{
+    border:none;
+    background: linear-gradient(60deg,#131086,#b621f3);
+    color:white;
+    padding:1rem;
+    border-radius:80px;
+    text-align:center;
+    text-transform:uppercase;
+    font-size:16px;
+    height:55px;
+    cursor:pointer;
+
+}
+
+
+fieldset {
+    margin:5px;
+    border:1px solid black;
+    /* height:45px; */
+    width: 595px;
+    padding: 0 10 rem;
+    border-radius: 8px;
+    padding-top: 10px;
+  }
+
+
+@media (max-width:1350px){
+    .login-left{
+        padding: 50px !important;
+    }
+    .login-form{
+        width:100%;
+    }
+}
+@media (max-width:768px){
+
+    #profile .container{
+        grid-template-columns: auto;
+    }
+
+
+    .login-right{
+        display: none;
+    }
+}

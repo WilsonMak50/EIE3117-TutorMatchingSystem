@@ -1,7 +1,7 @@
 <?php 
     session_start();
-    if(!isset($_SESSION['SID'])){
-        header("Location: /EIE3117/login.php?error=logout");
+    if(!isset($_SESSION['csrf_token'])){
+        header("Location: /login.php?error=logout");
         exit();
     }
 ?>
@@ -32,7 +32,7 @@
                 <nav class="navbar navbar-expand-lg bg-body-tertiary">
                     <div class="container-fluid">
                     <a class="navbar-brand" href="#">
-                        <img src="/EIE3117/img/Tutorcowicon.png" width="200" height="200">
+                        <img src="/img/Tutorcowicon.png" width="200" height="200">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/EIE3117/index.html">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/index.php">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="tut.php">Profile</a>             
@@ -104,7 +104,7 @@
                 
                         if(!mysqli_stmt_prepare($stmt,$sql)){
                             
-                            header("Location: /EIE3117/tutview.php?error=sqlerror");
+                            header("Location: /tutview.php?error=sqlerror");
                             exit();
                         }else{
                             mysqli_stmt_bind_param($stmt,"i",$i);
@@ -131,7 +131,7 @@
                         echo"<div class='lower'>";
                         echo"<h2>".$mySubject." Tutor</h2>";
                         //echo"<span>JAN 13, 2023 08:00PM</span>";
-                        echo"<input type='hidden' name='nid".$i."' id='nid".$i."' value=".$myID.">";
+                        echo"<input type='hidden' name='nid".$i."' id='nid".$i."' value=".$myName.">";
                         
                         echo"<input type='hidden' name='marks".$i."' id='marks".$i."' value=\"$myDescrip\">";
                         echo"<button type='button' id=".$i."  data-toggle='modal' data-target='#detailsModal'>
@@ -156,7 +156,7 @@
                         buttons[index].onclick = function () {
                         var nameid= $("#nid"+this.id).val();
                         var marks = $("#marks"+this.id).val();
-                        var str ="Name "+ nameid 
+                        var str ="Name : "+ nameid 
                         var str1="Introduction: " + marks;
                         $("#modal_name").html(str);
                         $("#modal_des").html(str1);

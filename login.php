@@ -6,7 +6,7 @@
         $sql="SELECT * FROM users WHERE uid=? ; ";
         $stmt=mysqli_stmt_init($connect);
         if(!mysqli_stmt_prepare($stmt,$sql)){
-            header("Location: /EIE3117/login.php?error=sqlerror");
+            header("Location: /login.php?error=sqlerror");
             exit();
         }else{
             mysqli_stmt_bind_param($stmt,"s",$cookieid);
@@ -16,22 +16,28 @@
             if($row = mysqli_fetch_assoc($result)){
                 if($row['servicetype']=='tut'){
                     session_start();
-                    $_SESSION['SID']=$row['uid'];
-                     $_SESSION['SName']=$row['nickName'];
-                    header("Location:/EIE3117/tut.php?login=success");
+                    $token =bin2hex(random_bytes(32));
+                    $_SESSION['csrf_token']=$token;
+                    
+                    header("Location:/tut.php?login=success");
 
                 }else if($row['servicetype']=='std'){
                     session_start();
-                    $_SESSION['SID']=$row['uid'];
-                    $_SESSION['SName']=$row['nickName'];
-                    header("Location:/EIE3117/std.php?login=success");
+                    $token =bin2hex(random_bytes(32));
+                    $_SESSION['csrf_token']=$token;
+                    header("Location:/std.php?login=success");
                 }
 
             }
         }
 
         
-    } 
+    }else{
+        session_start();
+        $token =bin2hex(random_bytes(32));
+        $_SESSION['csrf_token']=$token;
+
+    }
 
 
 ?>
@@ -51,17 +57,33 @@
                     <h1>Welcome to Tutor Cow</h1>
                     <p>Please login to use the platform</p>
                 </div>
-                <?php
-                    if(isset($_GET['error'])){
-                        if($_GET['error']=="emptyfields"){
-                            echo'<p class="signuperror"> Fill in all fields !</p>';
-                        }else if($_GET['error']=="wrongpwd"){
-                            echo'<p class="signuperror"> Wrong password ! </p>';
-                        }
+    <?php
+   
+        $secmsg = filter_input(INPUT_GET, 'error', FILTER_SANITIZE_STRING);
 
-                    } 
-                ?>
-                <form action="/EIE3117/login_acc.php" method="post" class="login-form">
+    
+        $valid_errors = array(
+            'emptyfields',
+            'wrongpwd'
+        );
+
+        // Check if error code is valid and display error message
+        if (isset($secmsg) && in_array($secmsg, $valid_errors)) {
+            switch ($secmsg) {
+                case 'emptyfields':
+                    echo '<p class="signuperror">Fill in all fields!</p>';
+                    break;
+                case 'wrongpwd':
+                    echo '<p class="signuperror">Wrong password!</p>';
+                    break;
+                default:
+                    // Handle invalid error code
+                    break;
+            }
+        } 
+    ?>
+
+                <form action="/login_acc.php" method="post" class="login-form">
                     <div class="login-form-content">
                         <div class="form-item">
                             <label for="username">Enter Username</label>
@@ -72,18 +94,13 @@
                             <input type="password" id="password" name="password">
                         </div>
                         <div class="form-item">
+                            <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                             <br>
                             <br>
                         </div>
-                        <!-- <div class="form-item">
-                            <div class="checkbox">
-                                <lebal for="rememberMe" id="checkboxLebal">Remember Me</lebal>
-                                <input type="checkbox" id="rememberMeCheckbox">
-                                
-                            </div>
-                        </div> -->
+  
                         <button type="submit" name="login-submit">Log in</button>
-                        <a class="btn" href="index.html" role="button">Back</a>
+                        <a class="btn" href="index.php" role="button">Back</a>
                     </div>
                 </form>
             </div>

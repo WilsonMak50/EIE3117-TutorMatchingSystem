@@ -5,22 +5,24 @@
     
     error_reporting(0);
     $msg = "";
-    if(isset($_SESSION['SID'])){    
-        $myUid=$_SESSION['SID'];
+    if(isset($_SESSION['csrf_token'])){    
+        $myUid=$_COOKIE['UserID'];
         $sql="SELECT * FROM student WHERE uid=? ;";
         $stmt=mysqli_stmt_init($connect);
 
         if(!mysqli_stmt_prepare($stmt,$sql)){
             
-            header("Location: /EIE3117/login.php?error=sqlerror");
+            header("Location: /login.php?error=sqlerror");
             exit();
         }else{
             mysqli_stmt_bind_param($stmt,"s",$myUid);
             mysqli_stmt_execute($stmt);
             $result =mysqli_stmt_get_result($stmt);
             if($row = mysqli_fetch_assoc($result)){
+                $myNickname=$row['name'];
                 $myDescrip=$row['intro']; 
                 $myContact=$row['contacts'];
+                $myAge=$row['dob'];
                             
             }else{
                 echo 'Cannot found record';
@@ -28,7 +30,7 @@
         }
 
     }else{
-        header("Location: /EIE3117/login.php?error=logout");
+        header("Location: /login.php?error=logout");
         exit();
     
     }
@@ -74,7 +76,7 @@
             echo $filename;
             mysqli_stmt_bind_param($stmt,"sss",$myIntro,$myContact,$myUid);
             mysqli_stmt_execute($stmt);
-            header("Location: /EIE3117/stdview.php");
+            header("Location: /stdview.php");
 
         }
 
@@ -130,7 +132,7 @@
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
                 <a class="navbar-brand" href="#">
-                    <img src="/EIE3117/img/Tutorcowicon.png" width="200" height="200">
+                    <img src="/img/Tutorcowicon.png" width="200" height="200">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -138,13 +140,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/EIE3117/index.html">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="std.php">Profile</a>             
                     </li>
                     <li class="nav-item2">
-                        <a class="nav-link" href="/EIE3117/stdview.php">Post</a>
+                        <a class="nav-link" href="/stdview.php">Post</a>
                     </li>
                     <li class="nav-item4">
                         <a class="nav-link" id="logoutbtn" >Log out</a>
@@ -174,14 +176,14 @@
                 <div class="login-header">
                     <h1>Edit Profile</h1>
                     <?php 
-                    if(isset($_SESSION['SID'])){   
+                    if(isset($_COOKIE['UserID'])){   
                         
-                        echo '<p><i><b>'.$_SESSION['SName'].',  </i></b>';
+                        echo '<p><i><b>'.$myNickname.',  </i></b>';
                     }else{
                         echo "You are logged out !";
                     }
                     ?> 
-                    <p>Please tell us more details !</p>
+                    Please tell us more details !
                 </div>
                 <label>Profile Picture </label><br>
                 <div id="display-image">
@@ -219,6 +221,17 @@
 		        </form>
                 <form class="login-form"  action = "" method = "post" id="formid" enctype="multipart/form-data">
                     <div class="login-form-content">
+                    <?php
+                            function calculate_age($birthdate) {
+                                $today = new DateTime();
+                                $diff = $today->diff(new DateTime($birthdate));
+                                return $diff->y;
+                            }
+                            $age = calculate_age($myAge);
+                            echo '<label for="name"> My Age : ',$age,'</label>';
+
+                        ?>
+                        <br>
 
                         <label>Description:</label><br>
                         <input type="text" id="des" name="des" value="<?=$myDescrip;?>" style="height:150px; width:700px; border-radius:20px; ">
@@ -228,7 +241,7 @@
 
                         <div class="buttons">
                             <button type="submit" name="up-profile">Done</button>
-                            <a class="btn" href="index.html" role="button">Back</a>
+                            <a class="btn" href="index.php" role="button">Back</a>
 
                         </div>
                         

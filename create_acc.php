@@ -3,15 +3,23 @@ if(isset($_POST["signup-submit"]))
 {
     require 'mysql-connect.php';
     $validation=0;
-    $myUserName=$_POST['username'];
-    $myNickName=$_POST['nickname'];
-    $myEmail=$_POST['email'];
-    $myPassword=$_POST['password'];
-    $myRePassword=$_POST['rpassword'];
-    $myGender=$_POST['gender'];
-    $myBirthday=$_POST['birthday'];
-    $myServiceType=$_POST['servicetype'];
-    echo '<script>alert('.$myUserName.')</script>';
+
+    $myUserName = mysql_real_escape_string($connect, $_POST['username']);
+    $myNickName = mysql_real_escape_string($connect, $_POST['nickname']);
+    $myEmail = mysql_real_escape_string($connect, $_POST['email']);
+    $myPassword = mysql_real_escape_string($connect, $_POST['password']);
+    $myRePassword = mysql_real_escape_string($connect, $_POST['rpassword']);
+    $myGender = mysql_real_escape_string($connect, $_POST['gender']);
+    $myBirthday = mysql_real_escape_string($connect, $_POST['birthday']);
+    $myServiceType = mysql_real_escape_string($connect, $_POST['servicetype']);
+
+    $myUserName = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    $myNickName = filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING);
+    $myEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $myPassword = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    $myBirthday = filter_input(INPUT_POST, 'birthday', FILTER_SANITIZE_STRING);
+    $myGender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
+    $myServiceType = filter_input(INPUT_POST, 'servicetype', FILTER_SANITIZE_STRING);
 
 
     $sql = "SELECT uid FROM users WHERE uid=?";
@@ -19,11 +27,11 @@ if(isset($_POST["signup-submit"]))
     if(!mysqli_stmt_prepare($stmt,$sql))
     {   
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=sqlerror");
+            header("Location: /tutreg.php?error=sqlerror");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=sqlerror");
+            header("Location: /stdreg.php?error=sqlerror");
             exit();
         }
 
@@ -37,11 +45,11 @@ if(isset($_POST["signup-submit"]))
         if($resultCheck>0){
 
             if($myServiceType=="tut"){
-                header("Location: /EIE3117/tutreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
+                header("Location: /tutreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
                 exit();
             }
             if($myServiceType=="std"){
-                header("Location: /EIE3117/stdreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
+                header("Location: /stdreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
                 exit();
             }
             
@@ -53,12 +61,12 @@ if(isset($_POST["signup-submit"]))
     if(empty($myUserName)|| empty($myNickName)||empty($myEmail)||empty($myPassword)||empty($myRePassword)||empty($myGender)||empty($myBirthday)||empty($myServiceType)){
 
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=emptyfields&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=emptyfields&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
@@ -67,41 +75,41 @@ if(isset($_POST["signup-submit"]))
     }else if(!filter_var($myEmail,FILTER_VALIDATE_EMAIL)&&(!preg_match("/^[a-zA-Z]*$/",$myNickName))){
 
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invalidmailnn&username=".$myUserName."");
+            header("Location: /tutreg.php?error=invalidmailnn");
             exit(); 
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invalidmailnn&username=".$myUserName."");
+            header("Location: /stdreg.php?error=invalidmailnn");
             exit(); 
         }
 
     }else if (!filter_var($myEmail,FILTER_VALIDATE_EMAIL)){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
+            header("Location: /tutreg.php?error=invalidmail&nickname=".$myNickName."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
+            header("Location: /stdreg.php?error=invalidmail&nickname=".$myNickName."");
             exit();
         }
 
     }else if (!preg_match("/^[0-9a-zA-Z]*$/",$myUserName)){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
     }else if ($myPassword!==$myRePassword){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=invlidpwd&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=invlidpwd&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         
@@ -115,11 +123,11 @@ if(isset($_POST["signup-submit"]))
 
         if(!mysqli_stmt_prepare($stmt,$sql)){
             if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=sqlerror");
+            header("Location: /tutreg.php?error=sqlerror");
             exit();
             }
             if($myServiceType=="std"){
-                header("Location: /EIE3117/stdreg.php?error=sqlerror");
+                header("Location: /stdreg.php?error=sqlerror");
                 exit();
             }
 
@@ -127,24 +135,28 @@ if(isset($_POST["signup-submit"]))
             $hashedPwd = password_hash($myPassword, PASSWORD_DEFAULT);
             mysqli_stmt_bind_param($stmt,"sssssss",$myUserName,$myNickName,$myEmail,$hashedPwd,$myBirthday,$myGender,$myServiceType);
             mysqli_stmt_execute($stmt);
+            mysqli_close($stmt);
             if($myServiceType=="tut"){
                 $myImg='profiletut.jpg';
-                $sql="INSERT INTO tutor (uid, img,name) VALUES (?,?,?)";
+                $sql="INSERT INTO tutor (uid, img,name,dob) VALUES (?,?,?,?)";
                 $stmt=mysqli_stmt_init($connect);
                 mysqli_stmt_prepare($stmt,$sql);
-                mysqli_stmt_bind_param($stmt,"sss",$myUserName,$myImg,$myNickName);
+                mysqli_stmt_bind_param($stmt,"ssss",$myUserName,$myImg,$myNickName,$myBirthday);
                 mysqli_stmt_execute($stmt);
+                header("Location:/login.php?signup=success");
+                exit();
              }else if($myServiceType=="std"){
                 $myImg='profilestd.svg';
-                $sql="INSERT INTO student (uid, name,img) VALUES (?,?,?)";
+                $sql="INSERT INTO student (uid, name,img,dob) VALUES (?,?,?,?)";
                 $stmt=mysqli_stmt_init($connect);
                 mysqli_stmt_prepare($stmt,$sql);
-                mysqli_stmt_bind_param($stmt,"sss",$myUserName,$myNickName,$myImg);
+                mysqli_stmt_bind_param($stmt,"ssss",$myUserName,$myNickName,$myImg,$myBirthday);
                 mysqli_stmt_execute($stmt);
+                header("Location:/login.php?signup=success");
+                 exit();
              }
             
-            header("Location:/EIE3117/login.php?signup=success");
-            exit();
+            
         }
         
     }
@@ -154,9 +166,9 @@ if(isset($_POST["signup-submit"]))
 }else{
 
     if($myServiceType=="tut"){
-    header("Location:/EIE3117/tutreg.php");
+    header("Location:/tutreg.php");
     }else{
-        header("Location:/EIE3117/stdreg.php");
+        header("Location:/stdreg.php");
     }
 }
 

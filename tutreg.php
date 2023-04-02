@@ -1,4 +1,8 @@
-<?php $sertype = "tut";?>
+<?php $sertype = "tut";
+session_start();
+$token =bin2hex(random_bytes(32));
+?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -17,22 +21,23 @@
                     <p>Please register your account to use the platform</p>
                 </div>
                 <?php
-                    if(isset($_GET['error'])){
-                        if($_GET['error']=="emptyfields"){
-                            echo'<p class="signuperror"> Fill in all fields !</p>';
-                        }else if($_GET['error']=="uidtaken"){
-                            echo'<p class="signuperror"> Username has been taken ! </p>';
-                        }else if($_GET['error']=="invalidmailnn"){
-                            echo'<p class="signuperror"> Invalid Nickname ! </p>';
-                        }else if($_GET['error']=="invalidmail"){
-                            echo'<p class="signuperror"> Invalid Email ! </p>';
-                        }else if($_GET['error']=="invliduid"){
-                            echo'<p class="signuperror"> Invalid Username ! </p>';
-                        }else if($_GET['error']=="invlidpwd"){
-                            echo'<p class="signuperror"> Invalid Password ! </p>';
-                        }
-
-                    } 
+                     $secmsg=urldecode($_GET['error']);
+                     if(isset($secmsg)){
+                         if(urldecode($_GET['error'])=="emptyfields"){
+                             echo'<p class="signuperror"> Fill in all fields !</p>';
+                         }else if(urldecode($_GET['error'])=="uidtaken"){
+                             echo'<p class="signuperror"> Username has been taken ! </p>';
+                         }else if(urldecode($_GET['error'])=="invalidmailnn"){
+                             echo'<p class="signuperror"> Invalid Nickname ! </p>';
+                         }else if(urldecode($_GET['error'])=="invalidmail"){
+                             echo'<p class="signuperror"> Invalid Email ! </p>';
+                         }else if(urldecode($_GET['error'])=="invliduid"){
+                             echo'<p class="signuperror"> Invalid Username ! </p>';
+                         }else if(urldecode($_GET['error'])=="invlidpwd"){
+                             echo'<p class="signuperror"> Invalid Password ! </p>';
+                         }
+ 
+                     } 
                 ?>
                 <form class="login-form" action = "create_acc.php" method = "post" id="formid" enctype="multipart/form-data">
                     <div class="login-form-content">
@@ -63,7 +68,7 @@
                         </div>
 
                         <input type="hidden" name="servicetype" value=<?php echo $sertype; ?>> 
-
+                        <input type="hidden" name="csrf_token" value="<?php echo $token; ?>">
                         <fieldset>
                             <legend>Select your gender:</legend>
 
@@ -87,7 +92,7 @@
                     
 
 
-                        <a class="btn" href="index.html" role="button">Back</a>
+                        <a class="btn" href="index.php" role="button">Back</a>
                     </div>
                     <div class="login-form-footer">
                         

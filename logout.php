@@ -5,7 +5,7 @@
 
     if(isset($_COOKIE["UserID"])) {
         
-        setcookie("UserID", time() - (60 * 60 * 24)); 
+        setcookie("UserID", time() - 3600); 
     } 
 
 

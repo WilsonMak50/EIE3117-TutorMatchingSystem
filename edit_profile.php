@@ -19,11 +19,11 @@ if(isset($_POST["profile-submit"]))
     if(!mysqli_stmt_prepare($stmt,$sql))
     {   
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invaliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=invaliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invaliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tdreg.php?error=invaliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
@@ -37,11 +37,11 @@ if(isset($_POST["profile-submit"]))
         if($resultCheck>0){
 
             if($myServiceType=="tut"){
-                header("Location: /EIE3117/tutreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
+                header("Location: /tutreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
                 exit();
             }
             if($myServiceType=="std"){
-                header("Location: /EIE3117/stdreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
+                header("Location: /stdreg.php?error=uidtaken&nickname=".$myNickName."&email=".$myEmail."");
                 exit();
             }
             
@@ -53,12 +53,12 @@ if(isset($_POST["profile-submit"]))
     if(empty($myUserName)|| empty($myNickName)||empty($myEmail)||empty($myPassword)||empty($myRePassword)||empty($myGender)||empty($myBirthday)||empty($myServiceType)){
 
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=emptyfields&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
@@ -67,41 +67,41 @@ if(isset($_POST["profile-submit"]))
     }else if(!filter_var($myEmail,FILTER_VALIDATE_EMAIL)&&(!preg_match("/^[a-zA-Z]*$/",$myNickName))){
 
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invalidmailnn&username=".$myUserName."");
+            header("Location: /tutreg.php?error=invalidmailnn&username=".$myUserName."");
             exit(); 
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invalidmailnn&username=".$myUserName."");
+            header("Location: /stdreg.php?error=invalidmailnn&username=".$myUserName."");
             exit(); 
         }
 
     }else if (!filter_var($myEmail,FILTER_VALIDATE_EMAIL)){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
+            header("Location: /tutreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
+            header("Location: /stdreg.php?error=invalidmail&username=".$myUserName."&nickname=".$myNickName."");
             exit();
         }
 
     }else if (!preg_match("/^[a-zA-Z]*$/",$myUserName)){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=invliduid&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
 
     }else if ($myPassword!==$myRePassword){
         if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /tutreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         if($myServiceType=="std"){
-            header("Location: /EIE3117/stdreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
+            header("Location: /stdreg.php?error=invlidpwd&username=".$myUserName."&nickname=".$myNickName."&email=".$myEmail."");
             exit();
         }
         
@@ -114,11 +114,11 @@ if(isset($_POST["profile-submit"]))
         $stmt=mysqli_stmt_init($connect);
         if(!mysqli_stmt_prepare($stmt,$sql)){
             if($myServiceType=="tut"){
-            header("Location: /EIE3117/tutreg.php?error=sqlerror");
+            header("Location: /tutreg.php?error=sqlerror");
             exit();
             }
             if($myServiceType=="std"){
-                header("Location: /EIE3117/stdreg.php?error=sqlerror");
+                header("Location: /stdreg.php?error=sqlerror");
                 exit();
             }
 
@@ -126,7 +126,7 @@ if(isset($_POST["profile-submit"]))
             $hashedPwd = password_hash($myPassword, PASSWORD_DEFAULT);
             mysqli_stmt_bind_param($stmt,"sssssss",$myUserName,$myNickName,$myEmail,$hashedPwd,$myBirthday,$myGender,$myServiceType);
             mysqli_stmt_execute($stmt);
-            header("Location:/EIE3117/login.php?signup=success");
+            header("Location:/login.php?signup=success");
             exit();
         }
         
@@ -137,9 +137,9 @@ if(isset($_POST["profile-submit"]))
 }else{
 
     if($myServiceType=="tut"){
-    header("Location:/EIE3117/tutreg.php");
+    header("Location:/tutreg.php");
     }else{
-        header("Location:/EIE3117/stdreg.php");
+        header("Location:/stdreg.php");
     }
 }
 

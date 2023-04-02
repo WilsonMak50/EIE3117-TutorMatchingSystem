@@ -3,8 +3,8 @@
 if(isset($_POST['login-submit'])){
     session_start();
     require 'mysql-connect.php';
-    $myUserName = mysql_real_escape_string($connect, $_POST['username']);
-    $myPassword = mysql_real_escape_string($connect, $_POST['password']);
+    $myUserName = mysqli_real_escape_string($connect, $_POST['username']);
+    $myPassword = mysqli_real_escape_string($connect, $_POST['password']);
     
 
     // Check if the CSRF token in the session matches the one submitted with the form

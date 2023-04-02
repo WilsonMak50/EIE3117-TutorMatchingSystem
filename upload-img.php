@@ -1,32 +1,46 @@
 <?php
-function uploadimg(){
-    error_reporting(0);
-require 'mysql-connect.php';
+require_once 'mysql-connect.php';
 $msg = "";
 
-$oneimg;
-// If upload button is clicked ...
-if (isset($_POST['upload'])) {
+function uploadimg() {
+    global $connect;
 
-	$filename = $_FILES["uploadfile"]["name"];
-	$tempname = $_FILES["uploadfile"]["tmp_name"];
-	$folder = "./upimage/" . $filename;
+    // If upload button is clicked ...
+    if (isset($_POST['upload'])) {
+        // Get the filename and temporary name of the uploaded file
+        $filename = mysqli_real_escape_string($connect, $_FILES["uploadfile"]["name"]);
+        $tempname = mysqli_real_escape_string($connect,$_FILES["uploadfile"]["tmp_name"]);
 
-	// Get all the submitted data from the form
-	$sql = "INSERT INTO image (filename) VALUES ('$filename')";
+        // Validate the file type to ensure only image files are uploaded
+        $fileType = strtolower(pathinfo($filename,PATHINFO_EXTENSION));
+        if($fileType != "jpg" && $fileType != "png" && $fileType != "jpeg" && $fileType != "gif" ) {
+            echo "<h3> Only JPG, JPEG, PNG & GIF files are allowed!</h3>";
+            return;
+        }
 
-	// Execute query
-	mysqli_query($connect, $sql);
+        // Generate a unique filename to prevent overwriting existing files
+        $newFilename = uniqid('', true) . '.' . $fileType;
+        $folder = "./upimage/" . $newFilename;
 
-	// Now let's move the uploaded image into the folder: image
-	if (move_uploaded_file($tempname, $folder)) {
-		echo "<h3> Image uploaded successfully!</h3>";
-	} else {
-		echo "<h3> Failed to upload image!</h3>";
-	}
+        // Get the file size to ensure it's not too large
+        $fileSize = $_FILES["uploadfile"]["size"];
+        if($fileSize > 500000) {
+            echo "<h3> Your file is too large!</h3>";
+            return;
+        }
+
+        // Insert the filename into the database
+        $stmt = $connect->prepare("INSERT INTO image (filename) VALUES (?)");
+        $stmt->bind_param("s", $newFilename);
+        $stmt->execute();
+
+        // Now let's move the uploaded image into the folder: upimage
+        if (move_uploaded_file($tempname, $folder)) {
+            echo "<h3> Image uploaded successfully!</h3>";
+        } else {
+            echo "<h3> Failed to upload image!</h3>";
+        }
+    }
 }
-
-}
-
-
+uploadimg();
 ?>

@@ -4,22 +4,22 @@ if(isset($_POST["signup-submit"]))
     require 'mysql-connect.php';
     $validation=0;
 
-    $myUserName = mysql_real_escape_string($connect, $_POST['username']);
-    $myNickName = mysql_real_escape_string($connect, $_POST['nickname']);
-    $myEmail = mysql_real_escape_string($connect, $_POST['email']);
-    $myPassword = mysql_real_escape_string($connect, $_POST['password']);
-    $myRePassword = mysql_real_escape_string($connect, $_POST['rpassword']);
-    $myGender = mysql_real_escape_string($connect, $_POST['gender']);
-    $myBirthday = mysql_real_escape_string($connect, $_POST['birthday']);
-    $myServiceType = mysql_real_escape_string($connect, $_POST['servicetype']);
+    $myUserName = mysqli_real_escape_string($connect, $_POST['username']);
+    $myNickName = mysqli_real_escape_string($connect, $_POST['nickname']);
+    $myEmail = mysqli_real_escape_string($connect, $_POST['email']);
+    $myPassword = mysqli_real_escape_string($connect, $_POST['password']);
+    $myRePassword = mysqli_real_escape_string($connect, $_POST['rpassword']);
+    $myGender = mysqli_real_escape_string($connect, $_POST['gender']);
+    $myBirthday = mysqli_real_escape_string($connect, $_POST['birthday']);
+    $myServiceType = mysqli_real_escape_string($connect, $_POST['servicetype']);
 
-    $myUserName = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    $myNickName = filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING);
-    $myEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $myPassword = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
-    $myBirthday = filter_input(INPUT_POST, 'birthday', FILTER_SANITIZE_STRING);
-    $myGender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
-    $myServiceType = filter_input(INPUT_POST, 'servicetype', FILTER_SANITIZE_STRING);
+    // $myUserName = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+    // $myNickName = filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING);
+    // $myEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    // $myPassword = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+    // $myBirthday = filter_input(INPUT_POST, 'birthday', FILTER_SANITIZE_STRING);
+    // $myGender = filter_input(INPUT_POST, 'gender', FILTER_SANITIZE_STRING);
+    // $myServiceType = filter_input(INPUT_POST, 'servicetype', FILTER_SANITIZE_STRING);
 
 
     $sql = "SELECT uid FROM users WHERE uid=?";
@@ -135,7 +135,7 @@ if(isset($_POST["signup-submit"]))
             $hashedPwd = password_hash($myPassword, PASSWORD_DEFAULT);
             mysqli_stmt_bind_param($stmt,"sssssss",$myUserName,$myNickName,$myEmail,$hashedPwd,$myBirthday,$myGender,$myServiceType);
             mysqli_stmt_execute($stmt);
-            mysqli_close($stmt);
+            mysqli_stmt_close($stmt);
             if($myServiceType=="tut"){
                 $myImg='profiletut.jpg';
                 $sql="INSERT INTO tutor (uid, img,name,dob) VALUES (?,?,?,?)";

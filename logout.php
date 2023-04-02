@@ -4,8 +4,8 @@
     session_destroy();
 
     if(isset($_COOKIE["UserID"])) {
-        
-        setcookie("UserID", time() - 3600); 
+        setcookie("UserID","", time() - 3600,'/','eie3117tutorcow.top',true,true,'Strict');
+ 
     } 
 
 

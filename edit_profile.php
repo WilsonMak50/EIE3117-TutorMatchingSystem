@@ -3,14 +3,22 @@ if(isset($_POST["profile-submit"]))
 {
     require 'mysql-connect.php';
     $validation=0;
-    $myUserName=$_POST['username'];
-    $myNickName=$_POST['nickname'];
-    $myEmail=$_POST['email'];
-    $myPassword=$_POST['password'];
-    $myRePassword=$_POST['rpassword'];
-    $myGender=$_POST['gender'];
-    $myBirthday=$_POST['birthday'];
-    $myServiceType=$_POST['servicetype'];
+    $myUserName = mysqli_real_escape_string($connect, $_POST['username']);
+    $myNickName = mysqli_real_escape_string($connect, $_POST['nickname']);
+    $myEmail = mysqli_real_escape_string($connect, $_POST['email']);
+    $myPassword = mysqli_real_escape_string($connect, $_POST['password']);
+    $myRePassword = mysqli_real_escape_string($connect, $_POST['rpassword']);
+    $myGender = mysqli_real_escape_string($connect, $_POST['gender']);
+    $myBirthday = mysqli_real_escape_string($connect, $_POST['birthday']);
+    $myServiceType = mysqli_real_escape_string($connect, $_POST['servicetype']);
+   
+    // $myNickName=$_POST['nickname'];
+    // $myEmail=$_POST['email'];
+    // $myPassword=$_POST['password'];
+    // $myRePassword=$_POST['rpassword'];
+    // $myGender=$_POST['gender'];
+    // $myBirthday=$_POST['birthday'];
+    // $myServiceType=$_POST['servicetype'];
 
 
 

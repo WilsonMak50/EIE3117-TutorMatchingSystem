@@ -36,9 +36,7 @@
         exit();
     }
     if(isset($_POST['confirm-submit'])){
-
-
-        $tutUid=$_POST['TutorID'];
+        $tutUid=urlencode($_POST['TutorID']);
         echo$tutUid;
         
         require 'mysql-connect.php';
@@ -60,11 +58,7 @@
             }else{
                 echo 'Cannot found record';
             }
-        }
-
-
-
-        
+        }      
         $sql="SELECT RID FROM request WHERE SID=? AND TID=?";
 
         $stmt=mysqli_stmt_init($connect);
@@ -92,11 +86,6 @@
                      
                     mysqli_stmt_bind_param($stmt,"ssss",$myUid,$tutUid,$myIntro,$myContact);
                     mysqli_stmt_execute($stmt);
-
-
-
-
-
                 }
             }
 
